@@ -1,5 +1,5 @@
-import { NotionPage } from "./notion-page.interface";
+import { INotionPage } from "../interfaces/i-notion-page";
 
-export class AddressPage implements NotionPage {
+export class AddressPage implements INotionPage {
   constructor(public id: string, public title: string) { }
 }
