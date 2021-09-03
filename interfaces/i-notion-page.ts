@@ -5,5 +5,5 @@ export interface INotionPage {
   parentDatabaseId: string;
   title: string;
   properties: PageProperty[];
-  getFormattedProperties(): object;
+  getFormattedProperties(): {};
 }

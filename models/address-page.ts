@@ -15,7 +15,7 @@ export class AddressPage implements INotionPage {
     this.title = this.titleFromProperties();
   }
 
-  public getFormattedProperties():object {
+  public getFormattedProperties():{} {
     return this.properties.reduce((formatted, currProperty) => {
       formatted[currProperty.name] = currProperty.getFormattedValue()
       return formatted;
