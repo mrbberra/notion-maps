@@ -1,4 +1,4 @@
-const { RichTextProperty, TitleProperty } = require("../../interfaces/page-property");
+import { TitleProperty, RichTextProperty } from "../../models/page-property";
 
 test('RichTextProperty formats simple text correctly', () => {
   const richTextProp = new RichTextProperty("Street Name", "Sesame St");

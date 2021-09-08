@@ -1,9 +1,9 @@
 import { Client } from '@notionhq/client';
-import { INotionPage } from "../interfaces/i-notion-page";
+import { NotionPage } from "../models/notion-page";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
-export async function createPage(pageToCreate: INotionPage) {
+export async function createPage(pageToCreate: NotionPage) {
   try {
     await notion.pages.create({
       parent: { database_id: pageToCreate.parentDatabaseId },

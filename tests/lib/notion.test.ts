@@ -1,6 +1,6 @@
 import { Client } from '@notionhq/client';
-import { TitleProperty, RichTextProperty } from "../../interfaces/page-property";
-import { AddressPage } from '../../models/address-page'
+import { TitleProperty, RichTextProperty } from "../../models/page-property";
+import { NotionPage } from '../../models/notion-page'
 import { createPage } from "../../lib/notion";
 
 const mockPageCreate = jest.fn(() => {
@@ -26,7 +26,7 @@ beforeEach(() => {
     new RichTextProperty("Street Number", "123"),
     new RichTextProperty("Street Name", "Sesame St")
   ];
-  const addressPage = new AddressPage({ parentDatabaseId: "ppp", properties: addressProps });
+  const addressPage = new NotionPage({ parentDatabaseId: "ppp", properties: addressProps });
   return createPage(addressPage);
 });
 

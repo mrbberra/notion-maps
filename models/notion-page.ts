@@ -1,11 +1,10 @@
-import { INotionPage } from "../interfaces/i-notion-page";
-import { PropertyType, PageProperty } from "../interfaces/page-property";
+import { PropertyType, PageProperty } from "./page-property";
 
-export class AddressPage implements INotionPage {
+export class NotionPage {
   id?: string;
   parentDatabaseId: string;
-  title: string;
   properties: PageProperty[];
+  title: string;
 
   constructor(addressPage) {
     this.id = addressPage.id;

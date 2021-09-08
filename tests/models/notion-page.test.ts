@@ -1,13 +1,13 @@
-import { TitleProperty, RichTextProperty } from "../../interfaces/page-property";
-import { AddressPage } from "../../models/address-page";
+import { TitleProperty, RichTextProperty } from "../../models/page-property";
+import { NotionPage } from "../../models/notion-page";
 
-test('AddressPage formats properties correctly', () => {
+test('NotionPage formats properties correctly', () => {
   const addressProps = [
     new TitleProperty("Name", "Home"),
     new RichTextProperty("Street Number", "123"),
     new RichTextProperty("Street Name", "Sesame St")
   ];
-  const addressPage = new AddressPage({ parentDatabaseId: "ppp", properties: addressProps });
+  const notionPage = new NotionPage({ parentDatabaseId: "ppp", properties: addressProps });
   const expected = {
     "Name": {
       title: [
@@ -37,5 +37,5 @@ test('AddressPage formats properties correctly', () => {
       ]
     },
   };
-  expect(addressPage.getFormattedProperties()).toStrictEqual(expected);
+  expect(notionPage.getFormattedProperties()).toStrictEqual(expected);
 });
