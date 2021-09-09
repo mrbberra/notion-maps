@@ -1,4 +1,14 @@
 const express = require('express');
-const router = express.Router();
+const apiRouter = express.Router();
 
-module.exports = router;
+apiRouter.get('/databases', function (req, res) {
+  res.status(200).send()
+});
+apiRouter.get('/databases/:databaseId', function (req, res) {
+  res.status(200).send()
+});
+apiRouter.post('/databases/:databaseId/pages', function (req, res) {
+  res.status(201).send()
+});
+
+module.exports = apiRouter;
