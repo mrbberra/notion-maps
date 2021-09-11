@@ -28,6 +28,6 @@ export class NotionPage {
 
   private titleFromProperties():string {
     const titleProperty = this.properties.find(p => p.type = PropertyType.title);
-    if (!! titleProperty) return titleProperty.value;
+    if (!! titleProperty) return titleProperty.simplifiedValue;
   }
 }

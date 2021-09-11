@@ -1,5 +1,5 @@
 // see https://developers.notion.com/reference/page#all-property-values
-export enum PropertyType {
+ enum PropertyType {
   richText = "rich_text",
   number = "number",
   select = "select",
@@ -21,23 +21,25 @@ export enum PropertyType {
   lastEditedBy = "last_edited_by"
 }
 
-export interface PageProperty {
+interface PageProperty {
   name: string,
   type: PropertyType,
-  value: any,
-  getFormattedValue(): object
+  rawJsonValue?: object,
+  simplifiedValue: any,
+  getFormattedValue(options?:object): object
 }
 
-export class RichTextProperty implements PageProperty {
+ class RichTextProperty implements PageProperty {
   type: PropertyType.richText;
-  constructor(public name: string, public value: string) { }
+  constructor(public name: string, public simplifiedValue: string, public rawJsonValue?: object) { }
 
-  public getFormattedValue():object {
+  public getFormattedValue({ allowRaw = true }: { allowRaw?: boolean } = {}):object {
+    if (allowRaw && this.rawJsonValue) return this.rawJsonValue;
     return {
       text: [
         {
           text: {
-            content: this.value,
+            content: this.simplifiedValue,
           },
         },
       ],
@@ -45,19 +47,26 @@ export class RichTextProperty implements PageProperty {
   };
 }
 
-export class TitleProperty implements PageProperty {
+ class TitleProperty implements PageProperty {
   type: PropertyType.title;
-  constructor(public name: string, public value: string) { }
+  constructor(public name: string, public simplifiedValue: string, public rawJsonValue?: object) { }
 
   public getFormattedValue():object {
     return {
       title: [
         {
           text: {
-            content: this.value,
+            content: this.simplifiedValue,
           },
         },
       ],
     };
   };
+}
+
+export {
+  PropertyType,
+  PageProperty,
+  RichTextProperty,
+  TitleProperty
 }
