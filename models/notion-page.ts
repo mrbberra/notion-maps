@@ -1,16 +1,22 @@
 import { PropertyType, PageProperty } from "./page-property";
 
+interface NotionPageParams {
+  id?: string;
+  parentDatabaseId: string;
+  properties: PageProperty[];
+}
+
 export class NotionPage {
   id?: string;
   parentDatabaseId: string;
   properties: PageProperty[];
   title: string;
 
-  constructor(addressPage) {
-    this.id = addressPage.id;
-    this.parentDatabaseId = addressPage.parentDatabaseId;
-    this.properties = addressPage.properties;
-    if (this.onlyHasOneTitleProperty()) throw "AddressPage can only have one title property.";
+  constructor({id, parentDatabaseId, properties}: NotionPageParams) {
+    this.id = id;
+    this.parentDatabaseId = parentDatabaseId;
+    this.properties = properties;
+    if (this.onlyHasOneTitleProperty()) throw "NotionPage can only have one title property.";
     this.title = this.titleFromProperties();
   }
 
