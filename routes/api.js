@@ -1,7 +1,7 @@
 const express = require('express');
 const apiRouter = express.Router();
 
-apiRouter.get('/databases', function (req, res) {
+apiRouter.post('/search', function (req, res) {
   res.status(200).send()
 });
 apiRouter.get('/databases/:databaseId', function (req, res) {
