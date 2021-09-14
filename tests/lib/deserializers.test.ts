@@ -121,6 +121,65 @@ describe('deserializePageProperty', () => {
   });
 });
 
+const createdDatabaseJson = {
+  "object": "database",
+  "id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+  "created_time": "2020-03-17T19:10:04.968Z",
+  "last_edited_time": "2020-03-17T21:49:37.913Z",
+  "parent": {
+    "type": "page_id",
+    "page_id": "48f8fee9-cd79-4180-bc2f-ec0398253067"
+  },
+  "title": [
+    {
+      "type": "text",
+      "text": {
+        "content": "Packing List",
+        "link": null
+      },
+      "annotations": {
+        "bold": false,
+        "italic": false,
+        "strikethrough": false,
+        "underline": false,
+        "code": false,
+        "color": "default"
+      },
+      "plain_text": "Packing List",
+      "href": null
+    }
+  ],
+  "properties": {
+    "Name": {
+      "id": "title",
+      "type": "title",
+      "title": {}
+    },
+    "Description": {
+      "id": "J@cS",
+      "type": "rich_text",
+      "rich_text": {}
+    },
+  }
+}
+
+describe('deserializeDatabase', () => {
+  test('creates a new NotionDatabase object from the returned JSON', () => {
+    const notionDatabase = deserializeDatabase(createdDatabaseJson);
+    expect(notionDatabase).toBeInstanceOf(NotionDatabase)
+  });
+
+  test('populates the id correctly', () => {
+    const notionDatabase = deserializeDatabase(createdDatabaseJson);
+    expect(notionDatabase.id).toEqual("dddddddd-dddd-dddd-dddd-dddddddddddd");
+  });
+
+  test('populates the title correctly', () => {
+    const notionPage = deserializeDatabase(createdDatabaseJson);
+    expect(notionPage.title).toEqual("Packing List");
+  });
+});
+
 const createdPageJson = {
   "object": "page",
   "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",

@@ -6,6 +6,7 @@ import {
   TitleProperty
 } from '../models/page-property';
 import { NotionPage } from '../models/notion-page';
+import { NotionDatabase } from '../models/notion-database';
 
 function richTextSimplifier(richText:object[]) {
   return richText
@@ -45,6 +46,11 @@ function deserializePageProperty(propertyName:string, jsonReceived:object):PageP
   }
 }
 
+function deserializeDatabase(response:object):NotionDatabase {
+  const deserializedTitleProperty = titleDeserializer("title", response["title"]);
+  return new NotionDatabase(response["id"], deserializedTitleProperty.simplifiedValue);
+}
+
 function deserializePage(response:object):NotionPage {
   const id = response["id"];
   const parentDatabaseId = response["parent"]["database_id"];
@@ -55,5 +61,6 @@ function deserializePage(response:object):NotionPage {
 
 export {
   deserializePageProperty,
+  deserializeDatabase,
   deserializePage
 }
