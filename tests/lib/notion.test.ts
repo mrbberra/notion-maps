@@ -1,4 +1,6 @@
 import { Client } from '@notionhq/client';
+import { PropertyType as _PropertyType } from '../../models/property-type';
+const PropertyType = { ..._PropertyType };
 import { TitleProperty, RichTextProperty } from "../../models/page-property";
 import { NotionPage } from '../../models/notion-page'
 import { createPage } from "../../lib/notion";

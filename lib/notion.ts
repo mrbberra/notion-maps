@@ -1,5 +1,6 @@
 import { Client } from '@notionhq/client';
-import { NotionPage } from "../models/notion-page";
+import { NotionPage } from '../models/notion-page';
+import { deserializePageProperty } from '../lib/deserialize-page-property';
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 

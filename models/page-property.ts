@@ -1,37 +1,26 @@
-// see https://developers.notion.com/reference/page#all-property-values
- enum PropertyType {
-  richText = "rich_text",
-  number = "number",
-  select = "select",
-  multiSelect = "multi_select",
-  date = "date",
-  formula = "formula",
-  relation = "relation",
-  rollup = "rollup",
-  title = "title",
-  people = "people",
-  files = "files",
-  checkbox = "checkbox",
-  url = "url",
-  email = "email",
-  phoneNumber = "phone_number",
-  createdTime = "created_time",
-  createdBy = "created_by",
-  lastEditedTime = "last_edited_time",
-  lastEditedBy = "last_edited_by"
+import { PropertyType as _PropertyType } from '../models/property-type';
+const PropertyType = { ..._PropertyType };
+
+class PagePropertyBase {
+  public name;
+  public type;
+  public rawJsonValue?;
+  public simplifiedValue;
+  public getFormattedValue(options = {}):object {
+    return {
+      type: this.type
+    };
+  };
 }
 
-interface PageProperty {
-  name: string,
-  type: PropertyType,
-  rawJsonValue?: object,
-  simplifiedValue: any,
-  getFormattedValue(options?:object): object
-}
-
- class RichTextProperty implements PageProperty {
-  type: PropertyType.richText;
-  constructor(public name: string, public simplifiedValue: string, public rawJsonValue?: object) { }
+class RichTextProperty extends PagePropertyBase {
+  public type = PropertyType.RichText;
+  constructor(name: string, simplifiedValue: string, rawJsonValue?: object) {
+    super();
+    this.name = name;
+    this.simplifiedValue = simplifiedValue;
+    this.rawJsonValue = rawJsonValue;
+  };
 
   public getFormattedValue({ allowRaw = true }: { allowRaw?: boolean } = {}):object {
     if (allowRaw && this.rawJsonValue) return this.rawJsonValue;
@@ -47,9 +36,14 @@ interface PageProperty {
   };
 }
 
- class TitleProperty implements PageProperty {
-  type: PropertyType.title;
-  constructor(public name: string, public simplifiedValue: string, public rawJsonValue?: object) { }
+class TitleProperty extends PagePropertyBase {
+  public type = PropertyType.Title;
+  constructor(name: string, simplifiedValue: string, rawJsonValue?: object) {
+    super();
+    this.name = name;
+    this.simplifiedValue = simplifiedValue;
+    this.rawJsonValue = rawJsonValue;
+  }
 
   public getFormattedValue():object {
     return {
@@ -65,8 +59,7 @@ interface PageProperty {
 }
 
 export {
-  PropertyType,
-  PageProperty,
+  PagePropertyBase,
   RichTextProperty,
   TitleProperty
 }

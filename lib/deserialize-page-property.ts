@@ -1,9 +1,10 @@
+import { PropertyType as _PropertyType } from '../models/property-type';
+const PropertyType = { ..._PropertyType };
 import {
-  PropertyType,
-  PageProperty,
+  PagePropertyBase,
   RichTextProperty,
   TitleProperty
-} from "../models/page-property";
+} from '../models/page-property';
 
 function richTextSimplifier(richText:object[]) {
   return richText
