@@ -23,14 +23,21 @@ function titleDeserializer(propertyName:string, rawPropertyValue:object[]):Title
   return new TitleProperty(propertyName, simplifiedValue, rawPropertyValue);
 }
 
-export function deserializePageProperty(jsonReceived:object):PageProperty|null {
-  const propertyName = Object.keys(jsonReceived)[0];
-  const propertyType = Object.keys(jsonReceived[propertyName])[0];
-  const rawPropertyValue = jsonReceived[propertyName][propertyType];
+// Notion API is still in beta and the docs are unclear on whether the "type": "some_type" key will be included
+function getPropertyType(jsonReceived:object):string {
+  const typeFromTypeKeyValue = jsonReceived["type"];
+  const proprtyTypeStrings = Object.values(PropertyType) as string[];
+  const typeFromDataKey = Object.keys(jsonReceived).find((key) => proprtyTypeStrings.includes(key));
+  return typeFromTypeKeyValue || typeFromDataKey;
+}
+
+export function deserializePageProperty(propertyName:string, jsonReceived:object):PagePropertyBase|null {
+  const propertyType = getPropertyType(jsonReceived);
+  const rawPropertyValue = jsonReceived[propertyType];
   switch(propertyType) {
-    case PropertyType.richText:
+    case PropertyType.RichText:
       return richTextDeserializer(propertyName, rawPropertyValue);
-    case PropertyType.title:
+    case PropertyType.Title:
       return titleDeserializer(propertyName, rawPropertyValue);
     default:
       return null; // only supporting title and rich text for now, potential TODO
