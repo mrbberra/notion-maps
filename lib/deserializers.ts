@@ -5,6 +5,7 @@ import {
   RichTextProperty,
   TitleProperty
 } from '../models/page-property';
+import { NotionPage } from '../models/notion-page';
 
 function richTextSimplifier(richText:object[]) {
   return richText
@@ -31,7 +32,7 @@ function getPropertyType(jsonReceived:object):string {
   return typeFromTypeKeyValue || typeFromDataKey;
 }
 
-export function deserializePageProperty(propertyName:string, jsonReceived:object):PagePropertyBase|null {
+function deserializePageProperty(propertyName:string, jsonReceived:object):PagePropertyBase|null {
   const propertyType = getPropertyType(jsonReceived);
   const rawPropertyValue = jsonReceived[propertyType];
   switch(propertyType) {
@@ -42,4 +43,17 @@ export function deserializePageProperty(propertyName:string, jsonReceived:object
     default:
       return null; // only supporting title and rich text for now, potential TODO
   }
+}
+
+function deserializePage(response:object):NotionPage {
+  const id = response["id"];
+  const parentDatabaseId = response["parent"]["database_id"];
+  const serializedProperties = Object.entries(response["properties"]) as [string, object][];
+  const pageProperties = serializedProperties.map(([k, v]) => deserializePageProperty(k, v));
+  return new NotionPage({ id, parentDatabaseId, pageProperties });
+}
+
+export {
+  deserializePageProperty,
+  deserializePage
 }

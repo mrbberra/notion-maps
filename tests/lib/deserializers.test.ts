@@ -1,5 +1,9 @@
-import { deserializePageProperty } from '../../lib/deserialize-page-property';
+import { deserializeDatabase, deserializePage, deserializePageProperty } from '../../lib/deserializers';
+import { NotionDatabase } from '../../models/notion-database';
+import { NotionPage } from '../../models/notion-page';
 import { RichTextProperty, TitleProperty } from '../../models/page-property';
+import { PropertyType as _PropertyType } from '../../models/property-type';
+const PropertyType = { ..._PropertyType };
 
 // copied these from the notion docs https://developers.notion.com/reference/page#property-value-object
 const serializedRichText = {
@@ -93,10 +97,7 @@ describe('deserializePageProperty', () => {
       expect(deserializePageProperty("Details", serializedRichText).simplifiedValue).toEqual('Some more text with some fun formatting');
     });
   });
-});
 
-
-describe('deserializePageProperty', () => {
   describe('when given a title property that is serialized', () => {
     test('returns a TitleProperty', () => {
       expect(deserializePageProperty("Name", serializedTitle)).toBeInstanceOf(TitleProperty);
@@ -117,5 +118,73 @@ describe('deserializePageProperty', () => {
     test('assigns the simplifiedValue', () => {
       expect(deserializePageProperty("Name", serializedTitle).simplifiedValue).toEqual('The title');
     });
+  });
+});
+
+const createdPageJson = {
+  "object": "page",
+  "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "created_time": "2020-03-17T19:10:04.968Z",
+  "last_edited_time": "2020-03-17T21:49:37.913Z",
+  "parent": {
+    "type": "database_id",
+    "database_id": "pppppppp-pppp-pppp-pppp-pppppppppppp"
+  },
+  "archived": false,
+  "url": "https://www.notion.so/Tuscan-Kale-251d2b5f268c4de2afe9c71ff92ca95c",
+  "properties": {
+    "Description": {
+      "id": "aaaa",
+      "type": "rich_text",
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Blah",
+            "link": null
+          },
+        }
+      ]
+    },
+    "Name": {
+      "id": "title",
+      "type": "title",
+      "title": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Titulo",
+            "link": null
+          },
+        }
+      ]
+    }
+  }
+}
+
+describe('deserializePage', () => {
+  test('creates a new NotionPage object from the returned JSON', () => {
+    const notionPage = deserializePage(createdPageJson);
+    expect(notionPage).toBeInstanceOf(NotionPage)
+  });
+
+  test('populates the id and parent database id correctly', () => {
+    const notionPage = deserializePage(createdPageJson);
+    expect(notionPage.id).toEqual("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+    expect(notionPage.parentDatabaseId).toEqual("pppppppp-pppp-pppp-pppp-pppppppppppp");
+  });
+
+  test('populates the title correctly', () => {
+    const notionPage = deserializePage(createdPageJson);
+    expect(notionPage.title).toEqual("Titulo");
+  });
+
+  test('populates the properties with deserialized PageProperties', () => {
+    const notionPage = deserializePage(createdPageJson);
+    expect(notionPage.pageProperties).toHaveLength(2);
+    expect(notionPage.pageProperties.map(p => p.type))
+      .toEqual(expect.arrayContaining([PropertyType.Title, PropertyType.RichText]));
+    expect(notionPage.pageProperties.map(p => p.simplifiedValue))
+      .toEqual(expect.arrayContaining(["Titulo", "Blah"]));
   });
 });
