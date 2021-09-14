@@ -24,8 +24,8 @@ class RichTextProperty extends PagePropertyBase {
 
   public getFormattedValue({ allowRaw = true }: { allowRaw?: boolean } = {}):object {
     if (allowRaw && this.rawJsonValue) return this.rawJsonValue;
-    return {
-      text: [
+    const richText = {
+      rich_text: [
         {
           text: {
             content: this.simplifiedValue,
@@ -33,6 +33,7 @@ class RichTextProperty extends PagePropertyBase {
         },
       ],
     };
+    return Object.assign(richText, super.getFormattedValue());
   };
 }
 
@@ -46,7 +47,7 @@ class TitleProperty extends PagePropertyBase {
   }
 
   public getFormattedValue():object {
-    return {
+    const title = {
       title: [
         {
           text: {
@@ -55,6 +56,7 @@ class TitleProperty extends PagePropertyBase {
         },
       ],
     };
+    return Object.assign(title, super.getFormattedValue());
   };
 }
 

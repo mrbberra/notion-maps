@@ -7,31 +7,34 @@ test('NotionPage formats properties correctly', () => {
     new RichTextProperty("Street Number", "123"),
     new RichTextProperty("Street Name", "Sesame St")
   ];
-  const notionPage = new NotionPage({ parentDatabaseId: "ppp", properties: addressProps });
+  const notionPage = new NotionPage({ parentDatabaseId: "pppppppp-pppp-pppp-pppp-pppppppppppp", pageProperties: addressProps });
   const expected = {
     "Name": {
-      title: [
+      "type": "title",
+      "title": [
         {
-          text: {
-            content: "Home",
+          "text": {
+            "content": "Home",
           },
         },
       ]
     },
     "Street Number": {
-      text: [
+      "type": "rich_text",
+      "rich_text": [
         {
-          text: {
-            content: "123",
+          "text": {
+            "content": "123",
           },
         },
       ]
     },
     "Street Name": {
-      text: [
+      "type": "rich_text",
+      "rich_text": [
         {
-          text: {
-            content: "Sesame St",
+          "text": {
+            "content": "Sesame St",
           },
         },
       ]
